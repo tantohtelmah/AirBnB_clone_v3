@@ -160,5 +160,15 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** class doesn't exist **")
 
+    def do_get0(self, arg):
+        args = shlex.split(arg)
+        print(models.storage.get(User, args[1]))
+
+    def do_count0(self, arg):
+        print(models.storage.count(User))
+
+    def do_count1(self, arg):
+        print(models.storage.count())
+
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
