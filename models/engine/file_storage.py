@@ -70,12 +70,14 @@ class FileStorage:
         self.reload()
 
     def get(self, cls, id):
+        """get object based on id and class"""
         try:
             return self.all()[f"{cls.__name__}.{id}"]
         except KeyError:
             return None
 
     def count(self, cls=None):
+        """count number of objects from a class or all"""
         cnt = len(self.all())
         if cls:
             cnt = 0
