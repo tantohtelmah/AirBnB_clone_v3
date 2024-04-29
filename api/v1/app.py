@@ -5,7 +5,7 @@ from models import storage
 from api.v1.views import app_views
 import os
 
-from flask import Flask
+from flask import Flask, jsonify, make_response
 app = Flask(__name__)
 
 # registering the blueprint
@@ -17,6 +17,11 @@ app.register_blueprint(app_views)
 def close_storage(exception=None):
     """Closes the storage connection when the app context is torn down."""
     storage.close()
+
+
+@app.errorhandler(404)
+def notFound(error):
+    return make_response(jsonify({"error": "Not found"}), 404)
 
 
 if __name__ == "__main__":
