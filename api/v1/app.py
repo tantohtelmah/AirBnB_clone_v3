@@ -20,7 +20,7 @@ def close_storage(exception=None):
 
 
 @app.errorhandler(404)
-def notFound(error):
+def not_found(error):
     return make_response(jsonify({"error": "Not found"}), 404)
 
 
