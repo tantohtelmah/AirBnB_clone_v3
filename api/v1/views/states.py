@@ -23,7 +23,7 @@ def states():
 def get_state(state_id):
     """ Retrieves a specific State objects"""
     state = storage.get(State, state_id)
-    return "{}"
+    return format_response({"skfn": "skfn"})
     if not state:
         from api.v1.app import not_found  # brought this here
         return not_found()  # added return
