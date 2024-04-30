@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+""" State routes"""
 
 from os import abort
 from flask import make_response, request
