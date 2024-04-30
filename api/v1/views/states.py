@@ -68,8 +68,8 @@ def update_state(state_id):
         abort(400, description="Missing name")
     ignore = ['id', 'created_at', 'updated_at']
     state = request.get_json()
-    for key, value in state.items():
-        if key not in ignore:
-            setattr(state, key, value)
-    storage.save()
+    # for key, value in state.items():
+    #     if key not in ignore:
+    #         setattr(state, key, value)
+    # storage.save()
     return format_response(state.to_dict())
