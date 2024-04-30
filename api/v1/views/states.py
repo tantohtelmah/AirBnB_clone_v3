@@ -3,21 +3,19 @@
 from os import abort
 from flask import make_response, request
 from flask import jsonify
-from models.base_model import BaseModel
 from models import storage
-from api.v1.views import app_views
-from api.v1.app import not_found
+from api.v1.views import app_views, format_response
 from models.state import State
 
 
 @app_views.route("/states/", methods=["GET"])
-def State():
+def states():
     """ Retrieves all State objects """
     all_states = storage.all(State).values()
     states = []
     for state in all_states:
         states.append(state.to_dict())
-    return jsonify(states)
+    return format_response(states)
 
 
 @app_views.route("/states/<state_id>", methods=["GET"])
@@ -25,8 +23,9 @@ def get_state(state_id):
     """ Retrieves a specific State objects"""
     state = storage.get(State, state_id)
     if not state:
-        not_found(404)
-    return jsonify(state.to_dict())
+        from api.v1.app import not_found  # brought this here
+        return not_found()  # added return
+    return format_response(state.to_dict())
 
 
 @app_views.route("/states/<state_id>", methods=["DELETE"])
@@ -34,15 +33,14 @@ def delete_state(state_id):
     """ Deletes a specific State objects"""
     state = storage.get(State, state_id)
     if not state:
-        not_found(404)
-    if not state_id:
-        return jsonify({}), 200
+        from api.v1.app import not_found  # brought this here
+        return not_found()
     storage.delete(state)
     storage.save()
-    return jsonify(state.to_dict())
+    return format_response({})
 
 
-@app_views.route("/states", methods=["POST"])
+@app_views.route("/states", methods=["POST"], strict_slashes=False)
 def create_state():
     """ Creates a State object"""
     if not request.get_json():
@@ -60,7 +58,8 @@ def update_state(state_id):
     """ updates a State object"""
     state = storage.get(State, state_id)
     if not state_id:
-        not_found()
+        from api.v1.app import not_found  # brought this here
+        return not_found()
     if not request.get_json():
         abort(400, description="Not a JSON")
     if 'name' not in request.get_json():
@@ -71,4 +70,4 @@ def update_state(state_id):
         if key not in ignore:
             setattr(state, key, value)
     storage.save()
-    return make_response(jsonify(state.to_dict()), 200)
+    return format_response(state.to_dict())
