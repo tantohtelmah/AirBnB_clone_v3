@@ -50,9 +50,9 @@ def create_state():
     if 'name' not in request.get_json():
         abort(400, description="Missing name")
     state = request.get_json()
-    instance = State(**state)
-    instance.save()
-    return make_response(jsonify(instance.to_dict()), 201)
+    # instance = State(**state)
+    # instance.save()
+    # return make_response(jsonify(instance.to_dict()), 201)
 
 
 @app_views.route("/states/<state_id>", methods=["PUT"])
