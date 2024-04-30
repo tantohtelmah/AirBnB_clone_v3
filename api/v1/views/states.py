@@ -14,8 +14,8 @@ def states():
     """ Retrieves all State objects """
     all_states = storage.all(State).values()
     states = []
-    for state in all_states:
-        states.append(state.to_dict())
+    # for state in all_states:
+    #     states.append(state.to_dict())
     return format_response(states)
 
 
