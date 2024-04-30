@@ -37,8 +37,8 @@ def delete_state(state_id):
     if not state:
         from api.v1.app import not_found  # brought this here
         return not_found()
-    storage.delete(state)
-    storage.save()
+    # storage.delete(state)
+    # storage.save()
     return format_response({})
 
 
