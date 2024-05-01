@@ -14,7 +14,7 @@ def format_response(data=None, status=200):
 
 from api.v1.views.index import *
 from api.v1.views.states import *
-from models.base_model import *
 from api.v1.views.cities import *
 from api.v1.views.amenities import *
 from api.v1.views.users import *
+from api.v1.views.places import *
