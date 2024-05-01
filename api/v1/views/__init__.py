@@ -7,9 +7,9 @@ import json
 app_views = Blueprint("app_views", __name__, url_prefix="/api/v1")
 
 
-def format_response(data=None):
+def format_response(data=None, status=200):
     """ Format responses as pretty json"""
-    return json.dumps(data, indent=4)
+    return (json.dumps(data, indent=4), status)
 
 
 from api.v1.views.index import *
