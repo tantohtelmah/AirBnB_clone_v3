@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+""" objects that handle all default RestFul API actions for Users """
 
 from flask import abort, request
 from models import storage
