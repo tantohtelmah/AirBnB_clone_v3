@@ -63,14 +63,12 @@ def update_city(city_id):
     city = storage.get(City, city_id)
     if not city_id:
         abort(404)
-    if not request.get_json():
-        abort(400, description="Not a JSON")
-    if 'name' not in request.get_json():
-        abort(400, description="Missing name")
-    ignore = ['id', 'state_id' 'created_at', 'updated_at']
     city_data = request.get_json()
+    if not city_data:
+        abort(400, description="Not a JSON")
+    if 'name' not in city_data:
+        abort(400, description="Missing name")
     for key, value in city_data.items():
-        if key not in ignore:
-            setattr(city, key, value)
+        setattr(city, key, value)
     storage.save()
     return format_response(city.to_dict(), 200)
