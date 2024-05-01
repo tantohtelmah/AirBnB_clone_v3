@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+""" City API endpoints """
 
 from flask import request, abort
 from models import storage

@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" State routes"""
+""" State API endpoints """
 
 from flask import abort, jsonify, request, make_response
 from models import storage

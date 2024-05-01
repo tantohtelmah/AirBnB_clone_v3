@@ -16,4 +16,3 @@ from api.v1.views.index import *
 from api.v1.views.states import *
 from models.base_model import *
 from api.v1.views.cities import *
-
