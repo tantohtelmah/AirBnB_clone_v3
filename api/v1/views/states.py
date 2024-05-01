@@ -56,14 +56,12 @@ def update_state(state_id):
     state = storage.get(State, state_id)
     if not state:
         abort(404)
-    if not request.get_json():
+    data = request.get_json()
+    if not data:
         abort(400, description="Not a JSON")
-    if 'name' not in request.get_json():
+    if 'name' not in data:
         abort(400, description="Missing name")
-    ignore = ['id', 'created_at', 'updated_at']
-    state = request.get_json()
-    for key, value in state.items():
-        if key not in ignore:
-            setattr(state, key, value)
+    for key, value in data.items():
+        setattr(state, key, value)
     storage.save()
-    return format_response(state.to_dict())
+    return format_response(storage.get(State, state_id).to_dict())
