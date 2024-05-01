@@ -1,9 +1,7 @@
 #!/usr/bin/python3
 
 from os import abort
-from flask import make_response, request
-from flask import jsonify
-from models.base_model import BaseModel
+from flask import make_response, request, jsonify
 from models import storage
 from api.v1.views import app_views, format_response
 from api.v1.app import not_found
