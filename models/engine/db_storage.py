@@ -19,23 +19,22 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 
 classes = {"Amenity": Amenity, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
-statClass = {"Amenity": "amenities", "City": "cities",
-           "Place": "places", "Review": "reviews", "State": "states", "User": "users"}
-
+statClass = {"Amenity": "amenities", "City": "cities", "Place": "places",
+             "Review": "reviews", "State": "states", "User": "users"}
 
 
 class DBStorage:
     """interaacts with the MySQL database"""
     __engine = None
     __session = None
-    
+
     statInfo = {"amenities": 0,
-           "cities": 0,
-           "places": 0,
-           "reviews": 0,
-           "states": 0,
-           "users": 0
-           }
+                "cities": 0,
+                "places": 0,
+                "reviews": 0,
+                "states": 0,
+                "users": 0
+                }
 
     def __init__(self):
         """Instantiate a DBStorage object"""
