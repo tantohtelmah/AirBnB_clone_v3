@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-""" User API endpoints """
 
 from flask import abort, request
 from models import storage
