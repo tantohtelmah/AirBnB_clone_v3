@@ -62,4 +62,4 @@ def update_state(state_id):
     for key, value in data.items():
         setattr(state, key, value)
     storage.save()
-    return format_response(storage.get(State, state_id).to_dict())
+    return format_response(state.to_dict())
