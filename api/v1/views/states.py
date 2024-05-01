@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ State routes"""
 
-from flask import abort, request, make_response
+from flask import abort, jsonify, request, make_response
 from models import storage
 from api.v1.views import app_views, format_response
 from models.state import State
@@ -11,9 +11,9 @@ from models.state import State
 def states():
     """ Retrieves all State objects """
     states = []
-    for state in all_states:
+    for state in storage.all(State).values():
         states.append(state.to_dict())
-    return jsonify(states)
+    return format_response(states)
 
 
 @app_views.route("/states/<state_id>", methods=["GET"])
@@ -36,12 +36,12 @@ def delete_state(state_id):
     return format_response({})
 
 
-@app_views.route("/states", methods=["POST"])
+@app_views.route("/states", methods=["POST"], strict_slashes=False)
 def create_state():
     """ Creates a State object"""
     if not request.get_json():
         abort(400, description="Not a JSON")
-    if "name" not in request.get_json():
+    if 'name' not in request.get_json():
         abort(400, description="Missing name")
     state = request.get_json()
     instance = State(**state)
@@ -65,4 +65,4 @@ def update_state(state_id):
         if key not in ignore:
             setattr(state, key, value)
     storage.save()
-    return make_response(jsonify(state.to_dict()), 200)
+    return format_response(state.to_dict())
