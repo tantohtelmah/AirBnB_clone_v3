@@ -16,7 +16,7 @@ def State():
     all_states = storage.all(State).values()
     states = []
     for state in all_states:
-        states.append(state.to_dict())
+        states.append(state)
     return jsonify(states)
 
 
@@ -42,12 +42,12 @@ def delete_state(state_id):
     return jsonify(state.to_dict())
 
 
-@app_views.route("/states", methods=["POST"])
+@app_views.route("/states/", methods=["POST"])
 def create_state():
     """ Creates a State object"""
     if not request.get_json():
         abort(400, description="Not a JSON")
-    if 'name' not in request.get_json():
+    if "name" not in request.get_json():
         abort(400, description="Missing name")
     state = request.get_json()
     instance = State(**state)
@@ -71,4 +71,4 @@ def update_state(state_id):
         if key not in ignore:
             setattr(state, key, value)
     storage.save()
-    return make_response(jsonify(state.to_dict()), 200)
+    return make_response(jsonify(state.to_dict), 200)
