@@ -4,7 +4,6 @@
 from flask import request, abort
 from models import storage
 from api.v1.views import app_views, format_response
-from models.city import City
 from models.place import Place
 
 
