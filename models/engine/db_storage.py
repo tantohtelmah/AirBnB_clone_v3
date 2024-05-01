@@ -16,25 +16,14 @@ import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-
 classes = {"Amenity": Amenity, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
-statClass = {"Amenity": "amenities", "City": "cities", "Place": "places",
-             "Review": "reviews", "State": "states", "User": "users"}
 
 
 class DBStorage:
     """interaacts with the MySQL database"""
     __engine = None
     __session = None
-
-    statInfo = {"amenities": 0,
-                "cities": 0,
-                "places": 0,
-                "reviews": 0,
-                "states": 0,
-                "users": 0
-                }
 
     def __init__(self):
         """Instantiate a DBStorage object"""
@@ -60,8 +49,24 @@ class DBStorage:
                 for obj in objs:
                     key = obj.__class__.__name__ + '.' + obj.id
                     new_dict[key] = obj
-                    DBStorage.statInfo[statClass[obj.__class__.__name__]] += 1
         return (new_dict)
+
+    def count(self, cls=None):
+        """Counts the number of objects in the database session"""
+        if cls is None:
+            count = 0
+            for cls in classes.values():
+                count += self.__session.query(cls).count()
+            return count
+        if cls not in classes.values():
+            return None
+        return self.__session.query(cls).count()
+
+    def get(self, cls, id):
+        """Retrieves an object from the database session"""
+        if cls not in classes.values():
+            return None
+        return self.__session.query(cls).filter(id == cls.id).one_or_none()
 
     def new(self, obj):
         """add the object to the current database session"""
@@ -86,18 +91,3 @@ class DBStorage:
     def close(self):
         """call remove() method on the private session attribute"""
         self.__session.remove()
-
-    def get(self, cls, id):
-        try:
-            return self.all()[f"{cls.__name__}.{id}"]
-        except KeyError:
-            return None
-
-    def count(self, cls=None):
-        cnt = len(self.all())
-        if cls:
-            cnt = 0
-            for obj in self.all().values():
-                if isinstance(obj, cls):
-                    cnt += 1
-        return cnt
