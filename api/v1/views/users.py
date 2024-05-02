@@ -16,7 +16,7 @@ def users_routes():
     """
     if request.method == "GET":
         users = [user.to_dict() for user in storage.all(User).values()]
-        return format_response(users)
+        return jsonify(users)
 
     if request.method == "POST":
         in_data = request.get_json(silent=True)
