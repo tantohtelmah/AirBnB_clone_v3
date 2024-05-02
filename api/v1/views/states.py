@@ -25,15 +25,11 @@ def get_states(state_id=None):
                  strict_slashes=False)
 def delete_state(state_id):
     """ deletes a state by id if it exist else raise 404"""
-    state_to_delete = None
-    for state in storage.all(State).values():
-        if state.id == state_id:
-            state_to_delete = state
-
-    if state_to_delete:
-        state_to_delete.delete()
+    state = storage.get(State, state_id)
+    if state:
+        state.delete()
         storage.save()
-        return make_response(jsonify({}), 200)
+        return {}
     abort(404)
 
 
