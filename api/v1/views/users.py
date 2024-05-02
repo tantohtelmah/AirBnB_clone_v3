@@ -24,8 +24,7 @@ def users_routes():
             return 'Not a JSON\n', 400
 
         for key in ["email", "password"]:
-            val = data.get(key)
-            if val is None:
+            if data.get(key) is None:
                 return "Missing {}\n".format(key), 400
 
         user = User(**data)
