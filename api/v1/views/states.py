@@ -9,7 +9,7 @@ from api.v1.views import app_views, format_response
 
 @app_views.route("/states", methods=['GET'], strict_slashes=False)
 @app_views.route("/states/<state_id>", methods=['GET'], strict_slashes=False)
-def get_states(state_id):
+def get_states(state_id=None):
     if state_id:
         state = storage.get(State, state_id)
         if state:
