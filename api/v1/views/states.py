@@ -8,18 +8,17 @@ from api.v1.views import app_views, format_response
 
 
 @app_views.route("/states", methods=['GET'], strict_slashes=False)
-def get_states():
+@app_views.route("/states/<state_id>", methods=['GET'], strict_slashes=False)
+def get_states(state_id):
+    if state_id:
+        state = storage.get(State, state_id)
+        if state:
+            return state.to_dict()
+        abort(404)
+
     """get all states"""
     states = [obj.to_dict() for obj in storage.all(State).values()]
     return format_response(states)
-
-
-@app_views.route("/states/<state_id>", methods=['GET'], strict_slashes=False)
-def get_state_by_id(state_id):
-    state = storage.get(State, state_id)
-    if state:
-        return state.to_dict()
-    abort(404)
 
 
 @app_views.route("/states/<state_id>", methods=['DELETE'],
