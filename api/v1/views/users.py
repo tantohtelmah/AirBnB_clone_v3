@@ -20,7 +20,7 @@ def users_routes():
 
     if request.method == "POST":
         data = request.get_json(silent=True)
-        if data is None or not isinstance(data, dict):
+        if data is None:
             return 'Not a JSON\n', 400
 
         for key in ["email", "password"]:
