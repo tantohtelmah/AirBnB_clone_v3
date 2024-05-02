@@ -72,5 +72,5 @@ def update_city(city_id):
             if key not in ['id', 'state_id', 'created_at', 'updated_at']:
                 setattr(city, key, val)
         city.save()
-        return city.to_dict(), 200
+        return city.to_dict()
     abort(404)

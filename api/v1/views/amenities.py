@@ -31,7 +31,7 @@ def delete_amenity(amenity_id):
     if amenity:
         amenity.delete()
         storage.save()
-        return {}, 200
+        return {}
     abort(404)
 
 
@@ -62,5 +62,5 @@ def update_amenity(amenity_id):
             if key not in ["id", "created_at", "updated_at"]:
                 setattr(amenity, key, val)
         amenity.save()
-        return {}
+        return amenity.to_dict()
     abort(404)
