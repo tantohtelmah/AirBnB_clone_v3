@@ -15,7 +15,7 @@ app.register_blueprint(app_views)
 
 
 @app.teardown_appcontext
-def close(eexception):
+def close(exception):
     """Closes the storage"""
     storage.close()
 
