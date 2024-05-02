@@ -27,24 +27,22 @@ def place_reviews_routes(place_id):
         return jsonify(reviews)
 
     elif request.method == "POST":
-        in_data = request.get_json(silent=True)
-        if in_data is None or not isinstance(in_data, dict):
-            return 'Not a JSON\n', 400
+        data = request.get_json(silent=True)
+        if data is None:
+            abort(400, "Not a JSON")
 
-        user_id = in_data.get("user_id")
+        user_id = data.get("user_id")
         if user_id is None:
-            return "Missing user_id\n", 400
+            abort(400, "Missing user_id")
 
-        user = storage.get(User, user_id)
-        if user is None:
+        if storage.get(User, user_id) is None:
             abort(404)
 
-        text = in_data.get("text")
-        if text is None:
-            return "Missing text\n", 400
+        if data.get("text") is None:
+            abort("Missing text")
 
-        in_data["place_id"] = place_id
-        review = Review(**in_data)
+        data["place_id"] = place_id
+        review = Review(**data)
         review.save()
         return review.to_dict(), 201
 
@@ -62,14 +60,14 @@ def review_id_routes(review_id):
         abort(404)
 
     if request.method == "GET":
-        return jsonify(review.to_dict())
+        return review.to_dict()
 
     elif request.method == "PUT":
-        in_data = request.get_json(silent=True)
-        if in_data is None or not isinstance(in_data, dict):
-            return 'Not a JSON\n', 400
+        data = request.get_json(silent=True)
+        if data is None:
+            abort(400, "Not a JSON")
 
-        for key, val in in_data.items():
+        for key, val in data.items():
             if key not in ["id", "user_id", "place_id", "created_at",
                            "updated_at"]:
                 setattr(review, key, val)
@@ -77,6 +75,6 @@ def review_id_routes(review_id):
         return review.to_dict(), 200
 
     elif request.method == "DELETE":
-        storage.delete(review)
+        review.delete()
         storage.save()
-        return jsonify({}), 200
+        return {}, 200
