@@ -20,11 +20,11 @@ def users_routes():
     if request.method == "POST":
         data = request.get_json(silent=True)
         if data is None:
-            return 'Not a JSON\n', 400
+            abort(400, "Not a JSON")
 
         for key in ["email", "password"]:
             if data.get(key) is None:
-                return "Missing {}\n".format(key), 400
+                abort(400, "Missing {}\n".format(key))
 
         user = User(**data)
         user.save()
@@ -48,7 +48,7 @@ def user_id_routes(user_id):
     elif request.method == "PUT":
         data = request.get_json(silent=True)
         if data is None:
-            return 'Not a JSON\n', 400
+            abort(400, "Not a JSON")
 
         for key, val in data.items():
             if key not in ["id", "email", "created_at", "updated_at"]:
