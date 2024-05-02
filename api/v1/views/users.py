@@ -16,7 +16,7 @@ def users_routes():
     """
     if request.method == "GET":
         users = [user.to_dict() for user in storage.all(User).values()]
-        return format_response(users)
+        return users
 
     if request.method == "POST":
         data = request.get_json(silent=True)
@@ -46,13 +46,12 @@ def user_id_routes(user_id):
 
     if request.method == "GET":
         return user.to_dict()
-
     elif request.method == "PUT":
-        in_data = request.get_json(silent=True)
-        if in_data is None or not isinstance(in_data, dict):
+        data = request.get_json(silent=True)
+        if data is None:
             return 'Not a JSON\n', 400
 
-        for key, val in in_data.items():
+        for key, val in data.items():
             if key not in ["id", "email", "created_at", "updated_at"]:
                 setattr(user, key, val)
         user.save()
