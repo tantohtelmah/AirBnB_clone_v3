@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 """ User API endpoints """
 
-from flask import abort, request, jsonify
-
+from flask import abort, request
 from api.v1.views import app_views, format_response
 from models import storage
 from models.user import User

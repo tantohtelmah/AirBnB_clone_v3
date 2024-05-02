@@ -1,23 +1,24 @@
 #!/usr/bin/python3
-"""handles api reqeust to states"""
-from flask import jsonify, abort, make_response, request
+""" State API endpoints """
+
+from flask import abort, request, jsonify, make_response
 from models.state import State
 from models import storage
-from api.v1.views import app_views
+from api.v1.views import app_views, format_response
 
 
 @app_views.route("/states", methods=['GET'], strict_slashes=False)
 def get_states():
-    """method to get all states"""
+    """get all states"""
     states = [obj.to_dict() for obj in storage.all(State).values()]
-    return jsonify(states)
+    return format_response(states)
 
 
 @app_views.route("/states/<state_id>", methods=['GET'], strict_slashes=False)
 def get_state_by_id(state_id):
-    for state in storage.all(State).values():
-        if state.id == state_id:
-            return jsonify(state.to_dict())
+    state = storage.get(State, state_id)
+    if state:
+        return state.to_dict()
     abort(404)
 
 
