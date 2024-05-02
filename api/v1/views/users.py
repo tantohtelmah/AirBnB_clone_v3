@@ -19,16 +19,16 @@ def users_routes():
         return format_response(users)
 
     if request.method == "POST":
-        in_data = request.get_json(silent=True)
-        if in_data is None or not isinstance(in_data, dict):
+        data = request.get_json(silent=True)
+        if data is None or not isinstance(data, dict):
             return 'Not a JSON\n', 400
 
         for key in ["email", "password"]:
-            val = in_data.get(key)
+            val = data.get(key)
             if val is None:
                 return "Missing {}\n".format(key), 400
 
-        user = User(**in_data)
+        user = User(**data)
         user.save()
         return user.to_dict(), 201
 
