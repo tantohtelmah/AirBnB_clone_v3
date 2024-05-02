@@ -57,6 +57,6 @@ def user_id_routes(user_id):
         return user.to_dict(), 200
 
     elif request.method == "DELETE":
-        storage.delete(user)
+        user.delete()
         storage.save()
         return {}
