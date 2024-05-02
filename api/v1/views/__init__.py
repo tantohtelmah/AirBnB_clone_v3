@@ -2,6 +2,7 @@
 """Create a flask application for the API"""
 
 from flask import Blueprint
+import json
 
 
 def format_response(data=None, status=200):
