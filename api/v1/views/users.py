@@ -25,7 +25,7 @@ def users_routes():
 
         for key in ["email", "password"]:
             if data.get(key) is None:
-                return "Missing {}\n".format(key), 400
+                return f"Missing {key}\n", 400
 
         user = User(**data)
         user.save()
