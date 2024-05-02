@@ -62,24 +62,24 @@ def place_id_routes(place_id):
         abort(404)
 
     if request.method == "GET":
-        return jsonify(place.to_dict())
+        return place.to_dict()
 
     elif request.method == "PUT":
-        in_data = request.get_json(silent=True)
-        if in_data is None or not isinstance(in_data, dict):
-            return 'Not a JSON\n', 400
+        data = request.get_json(silent=True)
+        if data is None:
+            abort(400, "Not a JSON")
 
-        for key, val in in_data.items():
+        for key, val in data.items():
             if key not in ["id", "user_id", "city_id", "created_at",
                            "updated_at"]:
                 setattr(place, key, val)
         place.save()
-        return place.to_dict(), 200
+        return place.to_dict()
 
     elif request.method == "DELETE":
-        storage.delete(place)
+        place.delete()
         storage.save()
-        return jsonify({}), 200
+        return {}
 
 
 @app_views.route("/places_search", methods=["POST"], strict_slashes=False)
@@ -87,11 +87,11 @@ def places_search():
     """
     POST: Retrieves all 'Place' objects depending on JSON
     """
-    param_dict = request.get_json(silent=True)
-    if param_dict is None or not isinstance(param_dict, dict):
-        return 'Not a JSON\n', 400
+    data = request.get_json(silent=True)
+    if data is None:
+        abort(400, "Not a JSON")
 
-    states_ids = param_dict.get("states")
+    states_ids = data.get("states")
     cities_ids = []
     places = []
 
@@ -101,13 +101,10 @@ def places_search():
             if state:
                 cities_ids.extend([city.id for city in state.cities])
 
-    cities_param = param_dict.get("cities")
+    cities_param = data.get("cities")
     if cities_param:
         cities_ids.extend([city_id for city_id in cities_param
                           if city_id not in cities_ids])
-        # for city_id in cities_param:
-        #     if city_id not in cities_ids:
-        #         cities_ids.append(city_id)
 
     if len(cities_ids) < 1:
         places = storage.all(Place).values()
@@ -117,7 +114,7 @@ def places_search():
             if city:
                 places.extend(city.places)
 
-    amenities_ids = param_dict.get("amenities")
+    amenities_ids = data.get("amenities")
     if not amenities_ids or len(amenities_ids) < 1:
         results = []
         for place in places:
