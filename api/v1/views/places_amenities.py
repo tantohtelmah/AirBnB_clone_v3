@@ -45,12 +45,12 @@ def place_amenities_control(place_id, amenity_id):
         response = jsonify(amenity.to_dict())
         if storage_t == "db":
             if amenity in place.amenities:
-                return response, 200
+                return response
             place.amenities.append(amenity)
         else:
             id = amenity.id
             if id in place.amenity_ids:
-                return response, 200
+                return response
             place.amenity_ids.append(id)
         storage.save()
         return response, 201
@@ -67,4 +67,4 @@ def place_amenities_control(place_id, amenity_id):
             place.amenity_ids.remove(id)
 
         storage.save()
-        return jsonify({}), 200
+        return {}
