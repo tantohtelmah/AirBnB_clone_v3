@@ -16,7 +16,7 @@ def users_routes():
     """
     if request.method == "GET":
         users = [user.to_dict() for user in storage.all(User).values()]
-        return users, 200
+        return format_response(users)
 
     if request.method == "POST":
         data = request.get_json(silent=True)
@@ -60,4 +60,4 @@ def user_id_routes(user_id):
     elif request.method == "DELETE":
         storage.delete(user)
         storage.save()
-        return jsonify({}), 200
+        return {}
