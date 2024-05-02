@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""RESTful API view to handle actions for 'User' objects"""
+""" User API endpoints """
 
 from flask import abort, request, jsonify
 
@@ -16,7 +16,7 @@ def users_routes():
     """
     if request.method == "GET":
         users = [user.to_dict() for user in storage.all(User).values()]
-        return jsonify(users)
+        return format_response(users)
 
     if request.method == "POST":
         in_data = request.get_json(silent=True)
