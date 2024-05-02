@@ -3,7 +3,7 @@
 
 from flask import abort, request, jsonify
 
-from api.v1.views import app_views
+from api.v1.views import app_views, format_response
 from models import storage
 from models.amenity import Amenity
 from models.city import City
@@ -26,27 +26,25 @@ def city_places_routes(city_id):
 
     if request.method == "GET":
         places = [place.to_dict() for place in city.places]
-        return jsonify(places)
+        return format_response(places)
 
     elif request.method == "POST":
-        in_data = request.get_json(silent=True)
-        if in_data is None or not isinstance(in_data, dict):
-            return 'Not a JSON\n', 400
+        data = request.get_json(silent=True)
+        if data is None:
+            abort(400, "Not a JSON")
 
-        user_id = in_data.get("user_id")
+        user_id = data.get("user_id")
         if user_id is None:
-            return "Missing user_id\n", 400
+            abort(400, "Missing user_id")
 
-        user = storage.get(User, user_id)
-        if user is None:
+        if storage.get(User, user_id) is None:
             abort(404)
 
-        name = in_data.get("name")
-        if name is None:
-            return "Missing name\n", 400
+        if data.get("name") is None:
+            abort(400, "Missing name")
 
-        in_data["city_id"] = city_id
-        place = Place(**in_data)
+        data["city_id"] = city_id
+        place = Place(**data)
         place.save()
         return place.to_dict(), 201
 
