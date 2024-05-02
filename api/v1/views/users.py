@@ -45,7 +45,7 @@ def user_id_routes(user_id):
         abort(404)
 
     if request.method == "GET":
-        return jsonify(user.to_dict())
+        return user.to_dict()
 
     elif request.method == "PUT":
         in_data = request.get_json(silent=True)
