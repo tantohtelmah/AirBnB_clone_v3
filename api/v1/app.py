@@ -23,7 +23,7 @@ def close(exception):
 @app.errorhandler(404)
 def not_found(e):
     '''Returns the JSON {"error": "Not found"} if resource wasn't found'''
-    return jsonify({"error": "Not found"}), e.code
+    return {"error": "Not found"}, e.code
 
 
 if __name__ == "__main__":
