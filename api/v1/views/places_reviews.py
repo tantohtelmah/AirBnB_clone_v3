@@ -39,7 +39,7 @@ def place_reviews_routes(place_id):
             abort(404)
 
         if data.get("text") is None:
-            abort("Missing text")
+            abort(400, "Missing text")
 
         data["place_id"] = place_id
         review = Review(**data)
